@@ -19,10 +19,11 @@ onMounted(() => {
     <h1 class="text-2xl font-bold text-center mb-4">
       Kiran Milk
     </h1>
-<div v-if="store.notification.show"
-     class="fixed top-4 left-1/2 -translate-x-1/2
-            bg-green-500 text-white px-4 py-2
-            rounded shadow-lg z-50">
+<div v-if="store.notification.show" :class="store.notification.error ? 'bg-red-500' : 'bg-green-500'"
+     class="fixed top-5 left-5 right-5
+          text-white
+         px-4 py-3 text-center
+         shadow-lg z-50">
 
   {{ store.notification.message }}
 

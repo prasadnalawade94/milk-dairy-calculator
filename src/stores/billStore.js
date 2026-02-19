@@ -9,7 +9,7 @@ export const useBillStore = defineStore('bill', {
     ],
      notification: {
     show: false,
-    message: ''
+    message: '',error: false
   }, 
   showBillPopup: false
   }),
@@ -22,7 +22,7 @@ export const useBillStore = defineStore('bill', {
 
   // last row empty असेल तर new row add करू नका
   if (!lastRow.item) {
-    this.showNotification("Please select item first")
+    this.showNotification("Please select item first",true)
     return
   }
 
@@ -31,13 +31,13 @@ export const useBillStore = defineStore('bill', {
 
     deleteRow(index) {
       if (this.rows.length === 1) {
-        this.showNotification("At least one row is required")
+        this.showNotification("At least one row is required",true)
         return
       }
       
       // Remove the row at the specified index
       if (index < 0 || index >= this.rows.length) {
-        this.showNotification("Invalid row index")
+        this.showNotification("Invalid row index",true)
         return
       }
       this.rows.splice(index, 1)
@@ -65,12 +65,13 @@ export const useBillStore = defineStore('bill', {
       this.history =
         JSON.parse(localStorage.getItem("milkHistory")) || []
     },
-    showNotification(msg) {
+    showNotification(msg, isError = false) {
   this.notification.message = msg
   this.notification.show = true
-
+  this.notification.error = isError
   setTimeout(() => {
     this.notification.show = false
+      this.notification.error = false
   }, 2000)
 },
 openBillPopup() {

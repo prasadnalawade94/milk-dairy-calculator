@@ -6,25 +6,51 @@ import html2canvas from "html2canvas"
 const store = useBillStore()
 
 const products = [
-  { name: "Amul", price: 57 },
-  { name: "Gokul G", price: 70 },
-  { name: "Gokul C", price: 70 }
-]
+  { name: "गोकुळ म्हैस", price: 57 },
+  { name: "चितळे गाय", price: 70 },
+  { name: "चितळे म्हैस", price: 70 },
+
+  { name: "१/४ गोवर्धन दही", price: 70 },
+  { name: "१/२ गोवर्धन दही", price: 70 },
+  { name: "१ गोवर्धन दही", price: 70 },
+
+  { name: "गोवर्धन दूध", price: 45 },
+  { name: "गोवर्धन ताक", price: 35 },
+
+  { name: "कात्रज दूध", price: 56 },
+  { name: "कात्रज दही", price: 70 },
+  { name: "कात्रज ताक", price: 35 },
+
+  { name: "सारथी दूध", price: 46 },
+  { name: "सारथी दही", price: 65 },
+  { name: "सारथी ताक", price: 35 },
+
+  { name: "खांदवे", price: 48 }
+];
+
+
+
+
+
+
+
+
 
 const grandTotal = computed(() =>
   store.rows.reduce((sum, r) => {
     if (!r.item) return sum
-    return sum + (r.item.price * r.qty)
+    return sum + (r.price * r.qty)
   }, 0)
 )
 function viewBill() {
   store.openBillPopup()
-}
-function saveBill() {
-  store.addHistory({
+   store.addHistory({
     items: JSON.parse(JSON.stringify(store.rows)),
     total: grandTotal.value
   })
+}
+function saveBill() {
+
 
   store.showNotification("Bill saved successfully")
   store.closeBillPopup()
@@ -60,38 +86,41 @@ function takeScreenshot() {
 <template>
   <div id="billArea">
 
-  <div class="grid grid-cols-[1fr_60px_70px_90px] gap-2 font-bold mb-2">
-    <div>Item</div>
-    <div class="text-center">Qty</div>
-    <div class="text-center">Rate</div>
-    <div class="text-center">Total</div>
-  </div>
+<div class="grid grid-cols-[minmax(60px,1fr)_60px_50px_70px] gap-2 font-bold mb-2">
+  <div class="text-center">Item</div>
+  <div class="text-center">Qty</div>
+  <div class="text-center">Rate</div>
+  <div class="text-center">Total</div>
+</div>
 
   <!-- ROWS -->
-  <div v-for="(row,index) in store.rows"
-       :key="index"
-       class="grid grid-cols-[1fr_60px_70px_90px] gap-2 mb-2 items-center">
+<div v-for="(row,index) in store.rows"
+     :key="index"
+     class="grid grid-cols-[minmax(60px,1fr)_60px_50px_70px] gap-2 mb-2 items-center">
 
-  <select v-model="row.item"
+
+  <select v-model="row.item"   @change="row.price = row.item.price"
     class="border rounded p-2 w-full">
     <option disabled value="">Select</option>
     <option v-for="p in products"
             :key="p.name"
             :value="p">
       {{ p.name }}
+      
     </option>
   </select>
 
-  <input type="number"
+  <input   type="number"
     v-model="row.qty"
     class="border rounded p-2 text-center"/>
 
-  <div class="text-center">
-    {{ row.item ? row.item.price : 0 }}
-  </div>
+<input
+ v-model="row.price"
+  class="border rounded p-2 text-center w-full"
+/>
 
   <div class="text-right font-semibold">
-    {{ row.item ? row.item.price * row.qty : 0 }}
+    {{ row.item ? row.price * row.qty : 0 }}
     <button
       @click="store.deleteRow(index)"
       class="text-red-500 font-bold ml-2">
@@ -149,7 +178,7 @@ function takeScreenshot() {
           {{ row.item.name }} - {{ row.qty }}
         </span>
         <span>
-          ₹{{ row.item.price * row.qty }}
+          ₹{{ row.price * row.qty }}
         </span>
       </div>
     </div>
@@ -158,18 +187,18 @@ function takeScreenshot() {
     <div class="text-right font-bold text-lg mt-3">
       Total: ₹{{
         store.rows.reduce((sum,r)=>
-          r.item ? sum + (r.item.price*r.qty) : sum
+          r.item ? sum + (r.price*r.qty) : sum
         ,0)
       }}
     </div>
 
     <!-- Buttons -->
     <div class="flex gap-2 mt-4">
-      <!-- <button
+      <button
         @click="store.closeBillPopup"
         class="flex-1 bg-gray-400 text-white py-2 rounded">
         Close
-      </button> -->
+      </button>
 
       <button
         @click="saveBill"
@@ -192,7 +221,7 @@ function takeScreenshot() {
     <span v-if="row.item">
       {{ row.item.name }} -
       {{ row.qty }}
-      = ₹{{ row.item.price * row.qty }}
+      = ₹{{ row.price * row.qty }}
     </span>
   </div>
 
@@ -210,7 +239,7 @@ function takeScreenshot() {
   top: -9999px; /* Hide off-screen */
 }
 #billArea {
-  padding: 20px;
+ padding: 20px 10px 20px 2px; 
   background-color: #f9f9f9;
   border-radius: 8px;
 }
