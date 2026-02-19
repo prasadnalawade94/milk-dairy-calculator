@@ -17,7 +17,7 @@ onMounted(() => {
   <div class="max-w-md mx-auto p-3">
 
     <h1 class="text-2xl font-bold text-center mb-4">
-      Kiran Milk
+      Prasad Milk
     </h1>
 <div v-if="store.notification.show" :class="store.notification.error ? 'bg-red-500' : 'bg-green-500'"
      class="fixed top-5 left-5 right-5
