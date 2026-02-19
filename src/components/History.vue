@@ -16,7 +16,7 @@ const store = useBillStore()
       <div v-for="(item,i) in h.items" :key="i">
         {{ item.item?.name }}
         - {{ item.qty }}
-        = ₹{{ item.item?.price * item.qty }}
+        = ₹{{ item?.price * item.qty }}
       </div>
 
       <div class="text-right font-bold mt-2">
