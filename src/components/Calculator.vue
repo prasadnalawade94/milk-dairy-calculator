@@ -6,24 +6,24 @@ import html2canvas from "html2canvas"
 const store = useBillStore()
 
 const products = [
-  { name: "गोकुळ म्हैस", price: 57 },
-  { name: "चितळे गाय", price: 70 },
-  { name: "चितळे म्हैस", price: 70 },
+  { name: "गोकुळ म्हैस", price: 73 },
+  { name: "चितळे गाय", price: 57 },
+  { name: "चितळे म्हैस", price: 73 },
 
-  { name: "१/४ गोवर्धन दही", price: 70 },
-  { name: "१/२ गोवर्धन दही", price: 70 },
-  { name: "१ गोवर्धन दही", price: 70 },
+  { name: "१/४ गोवर्धन दही", price: 80 },
+  { name: "१/२ गोवर्धन दही", price: 71 },
+  { name: "१ गोवर्धन दही", price: 62 },
 
   { name: "गोवर्धन दूध", price: 45 },
-  { name: "गोवर्धन ताक", price: 35 },
+  { name: "गोवर्धन ताक", price: 26 },
 
   { name: "कात्रज दूध", price: 56 },
-  { name: "कात्रज दही", price: 70 },
+  { name: "कात्रज दही", price: 80 },
   { name: "कात्रज ताक", price: 35 },
 
   { name: "सारथी दूध", price: 46 },
   { name: "सारथी दही", price: 65 },
-  { name: "सारथी ताक", price: 35 },
+  { name: "सारथी ताक", price: 26 },
 
   { name: "खांदवे", price: 48 }
 ];
