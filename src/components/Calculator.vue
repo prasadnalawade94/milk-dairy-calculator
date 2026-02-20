@@ -7,7 +7,7 @@ const store = useBillStore()
 
 const products = {
 दूध: [
-{ name: "गोकुळ म्हैस", price: 73 },
+{ name: "गोकुळ म्हैस", price: 75 },
 { name: "गोकुळ गाय", price: 57 },
 { name: "चितळे गाय", price: 57 },
 { name: "चितळे म्हैस", price: 73 },
