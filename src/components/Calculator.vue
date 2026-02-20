@@ -5,28 +5,55 @@ import html2canvas from "html2canvas"
 
 const store = useBillStore()
 
-const products = [
-  { name: "गोकुळ म्हैस", price: 73 },
-  { name: "चितळे गाय", price: 57 },
-  { name: "चितळे म्हैस", price: 73 },
+const products = {
+दूध: [
+{ name: "गोकुळ म्हैस", price: 73 },
+{ name: "गोकुळ गाय", price: 57 },
+{ name: "चितळे गाय", price: 57 },
+{ name: "चितळे म्हैस", price: 73 },
+{ name: "खांदवे (सौरभ) दूध", price: 48 },
+{ name: "गोवर्धन दूध", price: 45 },
+{ name: "कात्रज दूध", price: 56 },
+{ name: "अक्षरा दूध", price: 48 },
+{ name: "सारथी दूध", price: 46 },
+{ name: "१/४ गोविंद दूध", price: 48 },
+{ name: "१/२ गोविंद दूध" , price: 56 }
+],
 
-  { name: "१/४ गोवर्धन दही", price: 80 },
-  { name: "१/२ गोवर्धन दही", price: 71 },
-  { name: "१ गोवर्धन दही", price: 62 },
+दही: [
+{ name: "१० दही", price: 8 },
+{ name: "१/४ गोवर्धन दही", price: 80 },
+{ name: "१/२ गोवर्धन दही", price: 71 },
+{ name: "१ गोवर्धन दही", price: 62 },
+{ name: "१/४ गोकुळ दही", price: 80 },
+{ name: "१/२ गोकुळ दही", price: 80 },
+{ name: "१ गोकुळ दही", price: 75 },
+{ name: "अक्षरा दही", price: 70 },
+{ name: "सारथी दही", price: 65 },
+{ name: "कात्रज दही", price: 80 },
+],
 
-  { name: "गोवर्धन दूध", price: 45 },
-  { name: "गोवर्धन ताक", price: 26 },
+ताक: [
+{ name: "गोवर्धन ताक", price: 26 },
+{ name: "कात्रज ताक", price: 35 },
+{ name: "अक्षरा ताक", price: 26 },
+{ name: "सारथी ताक", price: 26 }
+],
 
-  { name: "कात्रज दूध", price: 56 },
-  { name: "कात्रज दही", price: 80 },
-  { name: "कात्रज ताक", price: 35 },
-
-  { name: "सारथी दूध", price: 46 },
-  { name: "सारथी दही", price: 65 },
-  { name: "सारथी ताक", price: 26 },
-
-  { name: "खांदवे", price: 48 }
-];
+पनीर: [
+{ name: "१/४ सारथी पनीर", price: 35 },
+{ name: "१/२ सारथी पनीर", price: 70 },
+{ name: "१/४ कात्रज पनीर", price: 45 },
+{ name: "१/२ कात्रज पनीर", price: 90 }
+],
+तुप: [
+{ name: "१ सारथी तुप ", price: 650 },
+{ name: "१/२ सारथी तुप", price: 350 },
+],
+others: [
+{ name: "इतर", price: 0 }
+]
+};
 
 
 
@@ -86,7 +113,7 @@ function takeScreenshot() {
 <template>
   <div id="billArea">
 
-<div class="grid grid-cols-[minmax(60px,1fr)_60px_50px_70px] gap-2 font-bold mb-2">
+<div class="grid grid-cols-[minmax(60px,1fr)_55px_55px_70px] gap-2 font-bold mb-2">
   <div class="text-center">Item</div>
   <div class="text-center">Qty</div>
   <div class="text-center">Rate</div>
@@ -96,21 +123,33 @@ function takeScreenshot() {
   <!-- ROWS -->
 <div v-for="(row,index) in store.rows"
      :key="index"
-     class="grid grid-cols-[minmax(60px,1fr)_60px_50px_70px] gap-2 mb-2 items-center">
+     class="grid grid-cols-[minmax(60px,1fr)_55px_55px_70px] gap-2 mb-2 items-center">
 
 
-  <select v-model="row.item"   @change="row.price = row.item.price"
-    class="border rounded p-2 w-full">
-    <option disabled value="">Select</option>
-    <option v-for="p in products"
-            :key="p.name"
-            :value="p">
-      {{ p.name }}
-      
+<select 
+  v-model="row.item"
+  @change="row.price = row.item.price"
+  class="border rounded p-2 w-full"
+>
+  <option disabled value="">Select</option>
+
+  <optgroup 
+    v-for="(items, category) in products" 
+    :key="category" 
+    :label="category"
+  >
+    <option 
+      v-for="p in items" 
+      :key="p.name"
+      :value="p"
+    >
+      {{ p.name }} - ₹{{ p.price }}
     </option>
-  </select>
+  </optgroup>
 
-  <input   type="number"
+</select>
+
+  <input  
     v-model="row.qty"
     class="border rounded p-2 text-center"/>
 
