@@ -113,7 +113,7 @@ function takeScreenshot() {
 <template>
   <div id="billArea">
 
-<div class="grid grid-cols-[minmax(60px,1fr)_55px_55px_70px] gap-2 font-bold mb-2">
+<div class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 font-bold mb-2">
   <div class="text-center">Item</div>
   <div class="text-center">Qty</div>
   <div class="text-center">Rate</div>
@@ -123,7 +123,7 @@ function takeScreenshot() {
   <!-- ROWS -->
 <div v-for="(row,index) in store.rows"
      :key="index"
-     class="grid grid-cols-[minmax(60px,1fr)_55px_55px_70px] gap-2 mb-2 items-center">
+     class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 mb-2 items-center">
 
 
 <select 
@@ -143,18 +143,18 @@ function takeScreenshot() {
       :key="p.name"
       :value="p"
     >
-      {{ p.name }} - ₹{{ p.price }}
+      {{ p.name }}
     </option>
   </optgroup>
 
 </select>
 
-  <input  
-    v-model="row.qty"
+  <input   type="number"
+    v-model.number="row.qty"
     class="border rounded p-2 text-center"/>
 
-<input
- v-model="row.price"
+<input type="number"
+ v-model.number="row.price"
   class="border rounded p-2 text-center w-full"
 />
 
