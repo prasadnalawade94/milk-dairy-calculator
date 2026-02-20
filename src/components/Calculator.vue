@@ -21,7 +21,7 @@ const products = {
 ],
 
 दही: [
-{ name: "१० दही", price: 8 },
+{ name: "दही डबा", price: 8 },
 { name: "१/४ गोवर्धन दही", price: 80 },
 { name: "१/२ गोवर्धन दही", price: 71 },
 { name: "१ गोवर्धन दही", price: 62 },

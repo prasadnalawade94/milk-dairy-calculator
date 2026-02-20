@@ -31,13 +31,15 @@ onMounted(() => {
     <div class="flex mb-3">
       <button
         @click="tab='calc'"
-        class="flex-1 p-2 bg-blue-500 text-white rounded-l">
+        class="flex-1 p-2 bg-blue-500 text-white rounded-l"
+        :class="tab === 'calc' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'">
         Calculator
       </button>
 
       <button
         @click="tab='history'"
-        class="flex-1 p-2 bg-gray-300 rounded-r">
+        class="flex-1 p-2 rounded-r"
+        :class="tab === 'history' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'">
         History
       </button>
     </div>
