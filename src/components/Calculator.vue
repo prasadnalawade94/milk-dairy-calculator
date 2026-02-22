@@ -11,6 +11,8 @@ const products = {
 { name: "गोकुळ गाय", price: 57 },
 { name: "चितळे गाय", price: 57 },
 { name: "चितळे म्हैस", price: 73 },
+{ name: "अमूल गाय", price: 57 },
+{ name: "अमूल म्हैस", price: 71 },
 { name: "खांदवे (सौरभ) दूध", price: 48 },
 { name: "गोवर्धन दूध", price: 45 },
 { name: "कात्रज दूध", price: 56 },
