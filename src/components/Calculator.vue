@@ -86,9 +86,7 @@ function selectItem(row, item, index) {
   row.item = item
   row.price = item.price
   openIndex.value = null
-  setTimeout(() => {
-    store.addRow()
-  }, 1000)
+
 
 }
 
