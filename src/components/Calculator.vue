@@ -1,16 +1,16 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useBillStore } from '../stores/billStore'
 import html2canvas from "html2canvas"
 
 const store = useBillStore()
 
 const products = {
-दूध: [
-{ name: "गोकुळ म्हैस", price: 75 },
-{ name: "गोकुळ गाय", price: 57 },
-{ name: "चितळे गाय", price: 57 },
-{ name: "चितळे म्हैस", price: 73 },
+  दूध: [
+    { name: "गोकुळ म्हैस", price: 75 },
+    { name: "गोकुळ गाय", price: 57 },
+    { name: "चितळे गाय", price: 57 },
+    { name: "चितळे म्हैस", price: 73 },
 { name: "अमूल गाय", price: 57 },
 { name: "अमूल म्हैस", price: 71 },
 { name: "खांदवे (सौरभ) दूध", price: 48 },
@@ -20,23 +20,23 @@ const products = {
 { name: "सारथी दूध", price: 46 },
 { name: "१/४ गोविंद दूध", price: 48 },
 { name: "१/२ गोविंद दूध" , price: 56 }
-],
+  ],
 
-दही: [
-{ name: "दही डबा", price: 8 },
+  दही: [
+    { name: "दही डबा", price: 8 },
 { name: "१/४ गोवर्धन दही", price: 80 },
 { name: "१/२ गोवर्धन दही", price: 71 },
 { name: "१ गोवर्धन दही", price: 62 },
 { name: "१/४ गोकुळ दही", price: 80 },
-{ name: "१/२ गोकुळ दही", price: 80 },
+    { name: "१/२ गोकुळ दही", price: 80 },
 { name: "१ गोकुळ दही", price: 75 },
 { name: "अक्षरा दही", price: 70 },
 { name: "सारथी दही", price: 65 },
 { name: "कात्रज दही", price: 80 },
-],
+  ],
 
-ताक: [
-{ name: "गोवर्धन ताक", price: 26 },
+  ताक: [
+    { name: "गोवर्धन ताक", price: 26 },
 { name: "कात्रज ताक", price: 35 },
 { name: "अक्षरा ताक", price: 26 },
 { name: "सारथी ताक", price: 26 }
@@ -51,16 +51,44 @@ const products = {
 तुप: [
 { name: "१ सारथी तुप ", price: 650 },
 { name: "१/२ सारथी तुप", price: 350 },
-],
-others: [
-{ name: "इतर", price: 0 }
-]
-};
+  ],
+  श्रीखंड: [
+{ name: "१०० श्रीखंड", price: 650 },
+{ name: "२०० सारथी श्रीखंड", price: 350 },
+  ],
+   लस्सी: [
+    { name: "लस्सी", price: 25 }
+  ],
+  इतर: [
+    { name: "इतर", price: 0 }
+  ]
+}  
+ 
 
+/* ---------------- DROPDOWN CONTROL ---------------- */
 
+const openIndex = ref(null)
+const openCategory = ref(null)
 
+function toggleDropdown(index) {
+  openIndex.value = openIndex.value === index ? null : index
+  openCategory.value = null
+}
 
+function toggleCategory(category) {
+  openCategory.value =
+    openCategory.value === category ? null : category
+}
 
+function selectItem(row, item, index) {
+  row.item = item
+  row.price = item.price
+  openIndex.value = null
+  setTimeout(() => {
+    store.addRow()
+  }, 1000)
+
+}
 
 
 
@@ -115,60 +143,78 @@ function takeScreenshot() {
 <template>
   <div id="billArea">
 
-<div class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 font-bold mb-2">
-  <div class="text-center">Item</div>
-  <div class="text-center">Qty</div>
-  <div class="text-center">Rate</div>
-  <div class="text-center">Total</div>
-</div>
+    <div class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 font-bold mb-2">
+      <div class="text-center">Item</div>
+      <div class="text-center">Qty</div>
+      <div class="text-center">Rate</div>
+      <div class="text-center">Total</div>
+    </div>
 
-  <!-- ROWS -->
-<div v-for="(row,index) in store.rows"
-     :key="index"
-     class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 mb-2 items-center">
+    <!-- ROWS -->
+    <div v-for="(row,index) in store.rows"
+         :key="index"
+         class="grid grid-cols-[minmax(65px,1fr)_55px_55px_70px] gap-2 mb-2 items-center">
 
+      <!-- CUSTOM DROPDOWN -->
+      <div class="relative">
 
-<select 
-  v-model="row.item"
-  @change="row.price = row.item.price"
-  class="border rounded p-2 w-full"
->
-  <option disabled value="">Select</option>
+        <div
+          class="border rounded p-2 bg-white cursor-pointer"
+          @click="toggleDropdown(index)"
+        >
+          {{ row.item ? row.item.name : "Select" }}
+        </div>
 
-  <optgroup 
-    v-for="(items, category) in products" 
-    :key="category" 
-    :label="category"
-  >
-    <option 
-      v-for="p in items" 
-      :key="p.name"
-      :value="p"
-    >
-      {{ p.name }}
-    </option>
-  </optgroup>
+        <div
+          v-if="openIndex === index"
+          class="absolute z-50 bg-white border rounded mt-1 w-full max-h-60 overflow-y-auto shadow-lg"
+        >
+          <div
+            v-for="(items, category) in products"
+            :key="category"
+            class="border-b"
+          >
+            <div
+              class="p-2 font-semibold bg-gray-100 cursor-pointer hover:bg-gray-200"
+              @click="toggleCategory(category)"
+            >
+              {{ category }}
+            </div>
 
-</select>
+            <div v-if="openCategory === category">
+              <div
+                v-for="p in items"
+                :key="p.name"
+                class="p-2 pl-6 hover:bg-blue-100 cursor-pointer"
+                @click="selectItem(row, p, index)"
+              >
+             <span class="text-gray-500">•</span>    {{ p.name }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
 
   <input   type="number"
-    v-model.number="row.qty"
-    class="border rounded p-2 text-center"/>
+        v-model.number="row.qty"
+        class="border rounded p-2 text-center"/>
 
-<input type="number"
- v-model.number="row.price"
+      <input type="number"
+        v-model.number="row.price"
   class="border rounded p-2 text-center w-full"
 />
 
-  <div class="text-right font-semibold">
-    {{ row.item ? row.price * row.qty : 0 }}
-    <button
-      @click="store.deleteRow(index)"
-      class="text-red-500 font-bold ml-2">
-      X
-    </button>
-  </div>
-</div>
+      <div class="text-right font-semibold">
+        {{ row.item ? row.price * row.qty : 0 }}
+        <button
+          @click="store.deleteRow(index)"
+          class="text-red-500 font-bold ml-2">
+          X
+        </button>
+      </div>
+    </div>
 
    <span @click="store.addRow" class="text-blue-500 font-bold cursor-pointer">+ Add Item</span>
     <div class="text-right text-xl font-bold mt-4">
@@ -202,75 +248,75 @@ function takeScreenshot() {
     Clear
   </button>
   <!-- BILL POPUP -->
-<div v-if="store.showBillPopup"
+  <div v-if="store.showBillPopup"
      class="fixed inset-0 bg-black bg-opacity-40
             flex items-center justify-center z-50">
 
-  <div class="bg-white w-[320px] p-4 rounded-lg shadow-lg">
+    <div class="bg-white w-[320px] p-4 rounded-lg shadow-lg">
 
-    <h2 class="text-lg font-bold mb-3 text-center">
-      Bill Details
-    </h2>
+      <h2 class="text-lg font-bold mb-3 text-center">
+        Bill Details
+      </h2>
 
     <!-- Bill Items -->
-    <div v-for="(row,i) in store.rows" :key="i">
-      <div v-if="row.item" class="flex justify-between">
+      <div v-for="(row,i) in store.rows" :key="i">
+        <div v-if="row.item" class="flex justify-between">
         <span>
           {{ row.item.name }} - {{ row.qty }}
         </span>
         <span>
           ₹{{ row.price * row.qty }}
         </span>
+        </div>
       </div>
-    </div>
 
     <!-- Total -->
-    <div class="text-right font-bold text-lg mt-3">
+      <div class="text-right font-bold text-lg mt-3">
       Total: ₹{{
         store.rows.reduce((sum,r)=>
           r.item ? sum + (r.price*r.qty) : sum
         ,0)
       }}
-    </div>
+      </div>
 
     <!-- Buttons -->
-    <div class="flex gap-2 mt-4">
-      <button
-        @click="store.closeBillPopup"
-        class="flex-1 bg-gray-400 text-white py-2 rounded">
-        Close
-      </button>
+      <div class="flex gap-2 mt-4">
+        <button
+          @click="store.closeBillPopup"
+          class="flex-1 bg-gray-400 text-white py-2 rounded">
+          Close
+        </button>
 
-      <button
-        @click="saveBill"
-        class="flex-1 bg-green-500 text-white py-2 rounded">
-        Save
-      </button>
+        <button
+          @click="saveBill"
+          class="flex-1 bg-green-500 text-white py-2 rounded">
+          Save
+        </button>
+      </div>
+
     </div>
-
   </div>
-</div>
 
 
   <div id="screenshotArea" class="bg-white p-4 w-[300px] hidden">
 
-  <div class="font-bold mb-2">
-    {{ new Date().toLocaleString() }}
-  </div>
+    <div class="font-bold mb-2">
+      {{ new Date().toLocaleString() }}
+    </div>
 
-  <div v-for="(row,i) in store.rows" :key="i">
+    <div v-for="(row,i) in store.rows" :key="i">
     <span v-if="row.item">
-      {{ row.item.name }} -
-      {{ row.qty }}
-      = ₹{{ row.price * row.qty }}
+        {{ row.item.name }} -
+        {{ row.qty }}
+        = ₹{{ row.price * row.qty }}
     </span>
-  </div>
+    </div>
 
-  <div class="text-right font-bold mt-2">
-    Total: ₹{{ grandTotal }}
-  </div>
+    <div class="text-right font-bold mt-2">
+      Total: ₹{{ grandTotal }}
+    </div>
 
-</div>
+  </div>
 
 </template>
 <style scoped>
@@ -285,4 +331,4 @@ function takeScreenshot() {
   border-radius: 8px;
 }
  
-</style>  
+</style>
