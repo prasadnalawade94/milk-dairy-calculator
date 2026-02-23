@@ -18,8 +18,9 @@ const products = {
 { name: "कात्रज दूध", price: 56 },
 { name: "अक्षरा दूध", price: 48 },
 { name: "सारथी दूध", price: 46 },
-{ name: "१/४ गोविंद दूध", price: 48 },
-{ name: "१/२ गोविंद दूध" , price: 56 }
+{ name: "१/४ गोविंद गाय", price: 45 },
+{ name: "१/२ गोविंद गाय" , price: 46 },
+{ name: "१/२ गोविंद म्हैस" , price: 56 }
   ],
 
   दही: [
@@ -27,11 +28,12 @@ const products = {
 { name: "१/४ गोवर्धन दही", price: 80 },
 { name: "१/२ गोवर्धन दही", price: 71 },
 { name: "१ गोवर्धन दही", price: 62 },
-{ name: "१/४ गोकुळ दही", price: 80 },
-    { name: "१/२ गोकुळ दही", price: 80 },
 { name: "१ गोकुळ दही", price: 75 },
 { name: "अक्षरा दही", price: 70 },
 { name: "सारथी दही", price: 65 },
+{ name: "१/४ गोकुळ दही", price: 80 },
+{ name: "१/२ गोकुळ दही", price: 80 },
+
 { name: "कात्रज दही", price: 80 },
   ],
 
